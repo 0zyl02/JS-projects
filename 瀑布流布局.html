@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>瀑布流</title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			body{
+				border: 5px solid red;
+			}
+			#wrapper {
+				width: 100%;
+				overflow: hidden;
+				padding-left: 15px;
+			}
+
+			.box {
+				width: 250px;
+				/* border: 1px solid red; */
+				margin: 0 22px;
+				float: left;
+			}
+
+			.item {
+				/* width: 250px; */
+				font-size: 20px;
+				text-align: center;
+				color: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+		</div>
+		<script type="text/javascript">
+			var boxs = document.querySelectorAll(".box");
+
+			function randomNumber(a = 1, b = 10) {
+				// 这两个函数会做个类型转换, 假如含有其他字符,返回的是NaN
+				var max = Math.max(a, b);
+				var min = Math.min(a, b);
+				if (isNaN(max)) throw "参数不规范!";
+				return Math.floor(Math.random() * (max - min + 1) + min);
+			}
+			
+				function bgcDiv(obj) {
+				var r = randomNumber(0, 255);
+				g = randomNumber(0, 255);
+				b = randomNumber(0, 255);
+				obj.style.backgroundColor = 'rgb('+r+' , '+g+' , '+b+')';
+			}
+			
+			var n = 1;
+			function waterFall(i) {
+				var item = document.createElement("div");
+				item.className = "item";
+				item.style.height = randomNumber(60, 200) + "px";
+				bgcDiv(item); 
+				item.innerHTML = n;
+				boxs[i].appendChild(item);
+				n++;
+			}
+			for(var i = 0;i<5;i++){
+				waterFall(i)
+			}
+			var minIndex=0;
+			var minHeight = 300;
+			function findMin(){
+				for(var i = 0;i<5;i++){
+					var Height= boxs[i].clientHeight;
+					minHeight = minHeight < Height ? minHeight : Height;
+					if(minHeight == boxs[i].clientHeight){
+						minIndex = i;
+					}
+				}
+				minHeight+=300;
+			}
+			
+			for(var i =0;i<95;i++){
+				findMin();
+				waterFall(minIndex);
+			}
+			
+
+		</script>
+	</body>
+</html>
